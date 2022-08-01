@@ -1,0 +1,22 @@
+.chat_div {
+  margin-top: 30px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+input {
+  border-radius: 10px;
+}
+
+.input_button {
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.chatSender {
+  color: lightcoral;
+}
+
+.chatUser {
+  color: rgb(132, 180, 196);
+}
