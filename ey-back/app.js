@@ -9,6 +9,8 @@ const http = require("http").Server(app);
 
 const { Server } = require("socket.io");
 
+const path = require("path");
+
 mongoose
   .connect(process.env.LOGIN_ATLAS)
   .then(() => {
@@ -24,8 +26,6 @@ app.use(express.json());
 
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
-
-http.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}...`));
 
 const io = new Server(http, {
   cors: {
@@ -63,6 +63,9 @@ io.on("connection", (socket) => {
   });
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("../ey-front/build"));
-}
+app.use(express.static(path.join(__dirname, "./public")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
+});
+
+http.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}...`));
