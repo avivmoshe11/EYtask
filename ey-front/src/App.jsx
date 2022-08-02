@@ -62,7 +62,7 @@ function App() {
           <Route
             path="users/friends/add/:id"
             element={
-              <ProtectedRoute adminOnly>
+              <ProtectedRoute>
                 <AddFriend />
               </ProtectedRoute>
             }
@@ -70,7 +70,7 @@ function App() {
           <Route
             path="users/friends/remove/:id"
             element={
-              <ProtectedRoute adminOnly>
+              <ProtectedRoute >
                 <DeleteFriend />
               </ProtectedRoute>
             }
