@@ -54,11 +54,13 @@ const User = ({ user: { _id, name, email, admin }, friends, setChat }) => {
                 <i className="bi bi-pencil-fill"></i>
               </Link>
             </button>
-            <button className="delete">
-              <Link to={`/users/delete/${_id}`} className="colorize">
-                <i className="bi bi-trash-fill"></i>
-              </Link>
-            </button>
+            {user._id != _id && (
+              <button className="delete">
+                <Link to={`/users/delete/${_id}`} className="colorize">
+                  <i className="bi bi-trash-fill"></i>
+                </Link>
+              </button>
+            )}
           </>
         )}
       </div>
