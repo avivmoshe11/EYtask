@@ -11,7 +11,6 @@ function auth(req, res, next) {
     req.user = payload;
     next();
   } catch (e) {
-    console.log("invalid token");
     return res.status(401).send("invalid token");
   }
 }

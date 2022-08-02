@@ -2,7 +2,6 @@ import PageHeader from "./common/pageHeader";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import Users from "./users";
-import User from "./user";
 import { useState, useEffect } from "react";
 import usersService from "../services/usersService";
 import "../styles/Home.css";
@@ -16,7 +15,6 @@ const Home = ({ redirect }) => {
     async function getFriends() {
       const { data } = await usersService.getAllFriends();
       setFriends(data);
-      console.log(data);
     }
     getFriends();
   }, []);

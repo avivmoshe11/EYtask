@@ -4,6 +4,7 @@ const _ = require("lodash");
 const { User, validateUser, validateUserUpdate } = require("../models/users");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
+const isAdmin = require("../middleware/isAdmin");
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
@@ -36,7 +37,6 @@ router.get("/", auth, async (req, res) => {
 router.get("/friends", auth, async (req, res) => {
   const user = await User.findOne({ _id: req.user._id });
   if (!user) {
-    console.log("no user");
     return res.status(404).send("User not found.");
   }
   const friends = await User.find({ _id: { $in: user.friends } });
@@ -48,7 +48,7 @@ router.get("/friends", auth, async (req, res) => {
   res.send(friends.map((friend) => friend._id));
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", auth, isAdmin, async (req, res) => {
   try {
     const { error } = validateUserUpdate(req.body);
     if (error) {
@@ -74,7 +74,7 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, isAdmin, async (req, res) => {
   try {
     const found = await User.findOneAndDelete({ _id: req.params.id });
     if (!found) {

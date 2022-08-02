@@ -5,13 +5,11 @@ const { User } = require("../models/users");
 const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
-  //validate user input
-
   const { error } = validateAuth(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  //validate system
+
   let user = await User.findOne({ email: req.body.email.toLowerCase() });
   if (!user) {
     return res.status(400).send("invalid email");
@@ -21,11 +19,8 @@ router.post("/", async (req, res) => {
   if (!isPasswordValid) {
     return res.status(400).send("invalid password");
   }
-  //process
 
-  //create JWT
   const token = user.generateAuthToken();
-  //response
   res.send({ token });
 });
 

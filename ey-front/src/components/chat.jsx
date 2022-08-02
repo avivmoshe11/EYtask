@@ -1,9 +1,8 @@
-import { setIn } from "formik";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-import Input from "./common/input";
 import { useAuth } from "../context/auth.context";
 import "../styles/Chat.css";
+
 const socket = io.connect("http://localhost:3900");
 
 function ChatApp({ privateChat = "" }) {
@@ -18,7 +17,6 @@ function ChatApp({ privateChat = "" }) {
     socket.on("receive_message", (msg) => {
       setReceive(msg);
       setMessages((messages) => [...messages, { message: msg, received: true }]);
-      console.log(socket);
     });
   }, [socket]);
 
@@ -50,19 +48,12 @@ function ChatApp({ privateChat = "" }) {
   };
 
   const handleClick = (e) => {
-    /*if (contains_heb(input)) {
-      const a = input.split("").reverse().join("");
-      setInput(a);
-    }*/
     if (input !== "") {
       socket.emit("send_message", { input, room });
       setMessages((messages) => [...messages, { message: input, received: false }]);
       setInput("");
     }
   };
-  /*const contains_heb = (str) => {
-    return /[\u0590-\u05FF]/.test(str);
-  };*/
 
   return (
     <>

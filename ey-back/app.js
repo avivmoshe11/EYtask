@@ -47,21 +47,22 @@ io.on("connection", (socket) => {
         }
         i++;
       }
-      console.log("leave this ", room);
+
       socket.leave(room);
       socket.rooms.delete(room);
     }
     socket.join(data);
-    console.log("joined room", data);
   });
 
   socket.on("leave_room", (data) => {
     socket.leave(data);
-    console.log("left room", data);
   });
 
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data.input);
-    console.log(data);
   });
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../ey-front/build"));
+}

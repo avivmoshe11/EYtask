@@ -3,11 +3,10 @@ import { useFormik } from "formik";
 import { formikValidateUsingJoi } from "../utils/formikValidateUsingJoi";
 import Input from "./common/input";
 import PageHeader from "./common/pageHeader";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/auth.context";
-import { Link, NavLink } from "react-router-dom";
 
 const UserAddByAdmin = () => {
   const navigate = useNavigate();

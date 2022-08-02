@@ -13,7 +13,6 @@ import EditUser from "./components/editUser";
 import DeleteUser from "./components/deleteUser";
 import AddFriend from "./components/addFriend";
 import DeleteFriend from "./components/deleteFriend";
-import ChatApp from "./components/chat";
 import UserAddByAdmin from "./components/userAddByAdmin";
 
 function App() {
@@ -76,7 +75,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="chat" element={<ChatApp />} />
           <Route
             path="*"
             element={

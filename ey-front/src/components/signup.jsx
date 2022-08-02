@@ -7,7 +7,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/auth.context";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const SignUp = ({ redirect }) => {
   const navigate = useNavigate();

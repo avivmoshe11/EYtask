@@ -12,10 +12,8 @@ const User = ({ user: { _id, name, email, admin }, friends, setChat }) => {
   const handleClick = () => {
     const chatId = user.email > email ? `${user.email}+${email}` : `${email}+${user.email}`;
     setChat(chatId);
-    console.log(chatId);
   };
 
-  //console.log(friends?.friends?.filter((friend) => friend._id == _id));
   return (
     <div className={userClass}>
       <Avatar src="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg" />

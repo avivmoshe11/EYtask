@@ -4,8 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "node .",
-    "dev": "nodemon ."
+    "start": "node app.js",
+    "dev": "nodemon .",
+    "build": "cd ../ey-front && npm run build",
+    "install-client": "cd ../ey-front && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build"
   },
   "keywords": [],
   "author": "",

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Joi from "joi";
 import PageHeader from "./common/pageHeader";
 import { toast } from "react-toastify";
-import { useFormik, Field } from "formik";
+import { useFormik } from "formik";
 import Input from "./common/input";
 import formikValidateUsingJoi from "../utils/formikValidateUsingJoi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,7 +17,6 @@ const EditUser = () => {
   useEffect(() => {
     async function getUser() {
       const { data } = await usersService.getUserById(id);
-      console.log(data);
       form.setValues(pickKeys(data, ["name", "email", "admin"]));
     }
 
@@ -42,7 +41,6 @@ const EditUser = () => {
     async onSubmit(values) {
       try {
         await usersService.editUser(id, values);
-        console.log(values);
         toast("The user was updated 👏");
         navigate("/");
       } catch ({ response }) {
