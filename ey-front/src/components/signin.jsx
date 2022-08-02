@@ -8,12 +8,22 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { Link, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+//import { useLoginUserMutation } from "../store/authStore";
+//import { useEffect } from "react";
+//import { useAppDispatch } from "../../../for-redux_inactive/hooks/authHooks";
+//import { setUser } from "../features/authSlice";
+//import jwtDecode from "jwt-decode";
 
 const SignIn = ({ redirect }) => {
   const navigate = useNavigate();
   const { user, login } = useAuth();
-
+  //const [loginUser, { data: loginData, isSuccess: isLoginSuccess, isError: isLoginError, error: loginError }] = useLoginUserMutation();
   const [error, setError] = useState("");
+  //const dispatch = useAppDispatch();
+
+  // const handleLogin = async (values) => {
+  //   return await loginUser(values);
+  // };
 
   const form = useFormik({
     validateOnMount: true,
@@ -32,7 +42,6 @@ const SignIn = ({ redirect }) => {
       try {
         const data = await login(values);
         toast(`Hey ${data.name}, Good to see you 😎`);
-
         if (redirect) {
           navigate(redirect);
         }
@@ -41,6 +50,19 @@ const SignIn = ({ redirect }) => {
           setError(response.data);
         }
       }
+      //const data = await login(values);
+      //const info = await handleLogin(values);
+
+      // if (info.error) {
+      //   setError(info.error.data);
+      // } else {
+      //   toast(`Hey, Good to see you 😎`);
+      //   dispatch(setUser({ user: jwtDecode(info.data.token), token: info.data.token }));
+      //   console.log(info.data.token, jwtDecode(info.data.token));
+      //   if (redirect) {
+      //     navigate(redirect);
+      //   }
+      // }
     },
   });
 

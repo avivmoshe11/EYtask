@@ -14,6 +14,7 @@ const User = ({ user: { _id, name, email, admin }, friends, setChat }) => {
     setChat(chatId);
     console.log(chatId);
   };
+
   //console.log(friends?.friends?.filter((friend) => friend._id == _id));
   return (
     <div className={userClass}>
@@ -21,9 +22,13 @@ const User = ({ user: { _id, name, email, admin }, friends, setChat }) => {
       <span className="">
         {name} | {email}
       </span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      {admin && <i className="bi bi-person-fill"></i>}
-      {admin && <a>admin user</a>}
+
+      {admin && (
+        <div className="adminNote">
+          <i className="bi bi-person-fill"></i>
+          <a>admin user</a>
+        </div>
+      )}
       <div className="userActions">
         {user._id != _id && isFriend && (
           <button onClick={handleClick}>
@@ -45,18 +50,18 @@ const User = ({ user: { _id, name, email, admin }, friends, setChat }) => {
           </button>
         )}
         {user.admin && (
-          <button className="edit">
-            <Link to={`/users/edit/${_id}`} className="colorize">
-              <i className="bi bi-pencil-fill"></i>
-            </Link>
-          </button>
-        )}
-        {user.admin && (
-          <button className="delete">
-            <Link to={`/users/delete/${_id}`} className="colorize">
-              <i className="bi bi-trash-fill"></i>
-            </Link>
-          </button>
+          <>
+            <button className="edit">
+              <Link to={`/users/edit/${_id}`} className="colorize">
+                <i className="bi bi-pencil-fill"></i>
+              </Link>
+            </button>
+            <button className="delete">
+              <Link to={`/users/delete/${_id}`} className="colorize">
+                <i className="bi bi-trash-fill"></i>
+              </Link>
+            </button>
+          </>
         )}
       </div>
     </div>

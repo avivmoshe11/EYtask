@@ -1,49 +1,42 @@
-import { useState, useEffect } from "react";
 import Joi from "joi";
-import PageHeader from "./common/pageHeader";
-import { toast } from "react-toastify";
-import { useFormik, Field } from "formik";
+import { useFormik } from "formik";
+import { formikValidateUsingJoi } from "../utils/formikValidateUsingJoi";
 import Input from "./common/input";
-import formikValidateUsingJoi from "../utils/formikValidateUsingJoi";
-import { useNavigate, useParams } from "react-router-dom";
-import usersService from "../services/usersService";
-import { pickKeys } from "../utils/pickKeys";
+import PageHeader from "./common/pageHeader";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/auth.context";
+import { Link, NavLink } from "react-router-dom";
 
-const EditUser = () => {
-  const [error, setError] = useState("");
+const UserAddByAdmin = () => {
   const navigate = useNavigate();
-
-  const { id } = useParams();
-  useEffect(() => {
-    async function getUser() {
-      const { data } = await usersService.getUserById(id);
-      console.log(data);
-      form.setValues(pickKeys(data, ["name", "email", "admin"]));
-    }
-
-    getUser();
-  }, [id]);
+  const { user, createUser } = useAuth();
+  const [error, setError] = useState("");
 
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
-      name: "",
       email: "",
+      password: "",
+      name: "",
       admin: false,
     },
     validate: formikValidateUsingJoi({
-      name: Joi.string().min(2).required().label("Name"),
       email: Joi.string()
         .email({ tlds: { allow: false } })
         .required()
         .label("Email"),
+      password: Joi.string().min(6).required().label("Password"),
+      name: Joi.string().min(2).required().label("Name"),
       admin: Joi.boolean().label("Admin"),
     }),
     async onSubmit(values) {
       try {
-        await usersService.editUser(id, values);
-        console.log(values);
-        toast("The user was updated 👏");
+        await createUser({ ...values });
+
+        toast("New account is ready 👏");
+
         navigate("/");
       } catch ({ response }) {
         if (response?.status === 400) {
@@ -55,12 +48,14 @@ const EditUser = () => {
 
   return (
     <>
-      <PageHeader title="Edit User" />
+      <PageHeader title="Add User By Admin" description="Admin user management interface: add user" />
 
       <form noValidate autoComplete="off" onSubmit={form.handleSubmit}>
         {error && <div className="alert alert-danger">{error}</div>}
-        <Input type="text" label="Name" error={form.touched.name && form.errors.name} {...form.getFieldProps("name")} />
+
         <Input type="email" label="Email" error={form.touched.email && form.errors.email} {...form.getFieldProps("email")} />
+        <Input type="password" label="Password" error={form.touched.password && form.errors.password} {...form.getFieldProps("password")} />
+        <Input type="text" label="Name" error={form.touched.name && form.errors.name} {...form.getFieldProps("name")} />
         <div className="form-group">
           <label htmlFor="Admin" className="form-label">
             Admin
@@ -73,9 +68,10 @@ const EditUser = () => {
             onChange={(e) => form.setFieldValue("admin", !form.getFieldProps("admin").value)}
           />
         </div>
+
         <div className="my-2">
           <button type="submit" disabled={!form.isValid} className="btn btn-primary me-1">
-            Edit User
+            Add User
           </button>
         </div>
       </form>
@@ -83,4 +79,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default UserAddByAdmin;

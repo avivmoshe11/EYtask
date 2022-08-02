@@ -18,10 +18,12 @@ function ChatApp({ privateChat = "" }) {
     socket.on("receive_message", (msg) => {
       setReceive(msg);
       setMessages((messages) => [...messages, { message: msg, received: true }]);
+      console.log(socket);
     });
   }, [socket]);
 
   useEffect(() => {
+    socket.emit("leave_room", room);
     setRoom(privateChat);
     joinRoom();
     setSender(identifySender(privateChat));

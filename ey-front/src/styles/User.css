@@ -57,11 +57,23 @@
 .delete {
   background-color: lightcoral;
 }
-
+.adminNote {
+  margin-left: 20px;
+}
 .colorize {
   color: black;
 }
 
 .colorize:hover {
   color: rgb(74, 74, 172);
+}
+
+@media screen and (max-width: 768px) {
+  .user {
+    padding-bottom: 3rem;
+    border-color: purple;
+  }
+  .userActions {
+    bottom: 5px;
+  }
 }

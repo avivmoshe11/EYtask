@@ -5,11 +5,6 @@ const { User, validateUser, validateUserUpdate } = require("../models/users");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
 
-router.get("/me", auth, async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id }).select("-password -createdAt -__v");
-  res.send(user);
-});
-
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) {
@@ -26,7 +21,7 @@ router.post("/", async (req, res) => {
   const salt = await bcrypt.genSalt(12);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
-  //response
+
   res.send(_.pick(user, ["_id", "name", "email"]));
 });
 
@@ -49,7 +44,7 @@ router.get("/friends", auth, async (req, res) => {
     res.status(404).send("User has no friends.");
     return;
   }
-  //res.send(friends.map((friend) => _.pick(friend, ["_id", "name", "email", "admin"])));
+
   res.send(friends.map((friend) => friend._id));
 });
 
@@ -85,7 +80,7 @@ router.delete("/:id", auth, async (req, res) => {
     if (!found) {
       return res.status(404).send("User not found.");
     }
-    res.send("deleted");
+    res.send({ ok: true });
   } catch {
     return res.status(404).send("User not found.");
   }
@@ -102,21 +97,6 @@ router.get("/:id", auth, async (req, res) => {
     return res.status(404).send("User not found.");
   }
 });
-
-/*router.get("/friends", auth, async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
-  if (!user) {
-    console.log("no user");
-    return res.status(404).send("User not found.");
-  }
-  const friends = await User.find({ _id: { $in: user.friends } });
-  if (!friends || friends.length === 0) {
-    res.status(404).send("User has no friends.");
-    return;
-  }
-  //res.send(friends.map((friend) => _.pick(friend, ["_id", "name", "email", "admin"])));
-  res.send(friends.map((friend) => friend._id));
-});*/
 
 router.put("/friends/add/:id", auth, async (req, res) => {
   try {
@@ -152,7 +132,7 @@ router.delete("/friends/remove/:id", auth, async (req, res) => {
     if (!user) {
       return res.status(404).send("User not found.");
     }
-    res.send("Removed!");
+    res.send({ ok: true });
   } catch {
     return res.status(404).send("User not found.");
   }

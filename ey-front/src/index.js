@@ -9,18 +9,17 @@ import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { AuthProvider } from "./context/auth.context";
+import { AuthProvider, useAuth, authContext } from "./context/auth.context";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+//import { store } from "./store/store";
+//import { authStore } from "./store/authStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </Provider>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </BrowserRouter>
 );
 

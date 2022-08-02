@@ -39,7 +39,7 @@ export function getUser() {
 }
 
 export function getAllUsers() {
-  return httpService.get("/users/");
+  return httpService.get("/users");
 }
 
 export function getAllFriends() {

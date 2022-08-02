@@ -8,13 +8,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar";
 import SignOut from "./components/signout";
-import Users from "./components/users";
 import ProtectedRoute from "./components/common/protectedRoute";
 import EditUser from "./components/editUser";
 import DeleteUser from "./components/deleteUser";
 import AddFriend from "./components/addFriend";
 import DeleteFriend from "./components/deleteFriend";
 import ChatApp from "./components/chat";
+import UserAddByAdmin from "./components/userAddByAdmin";
 
 function App() {
   return (
@@ -33,9 +33,17 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="signin" element={<SignIn />} />
+          <Route path="signin" element={<SignIn redirect="/" />} />
           <Route path="signup" element={<SignUp redirect="/signin" />} />
           <Route path="signout" element={<SignOut redirect="/" />} />
+          <Route
+            path="users/add"
+            element={
+              <ProtectedRoute adminOnly>
+                <UserAddByAdmin />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="users/edit/:id"
             element={
@@ -55,20 +63,28 @@ function App() {
           <Route
             path="users/friends/add/:id"
             element={
-              <ProtectedRoute>
-                <AddFriend adminOnly />
+              <ProtectedRoute adminOnly>
+                <AddFriend />
               </ProtectedRoute>
             }
           />
           <Route
             path="users/friends/remove/:id"
             element={
-              <ProtectedRoute>
-                <DeleteFriend adminOnly />
+              <ProtectedRoute adminOnly>
+                <DeleteFriend />
               </ProtectedRoute>
             }
           />
           <Route path="chat" element={<ChatApp />} />
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <footer>

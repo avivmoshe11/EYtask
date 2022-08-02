@@ -21,15 +21,47 @@ const usersApi = createApi({
   endpoints: (build) => ({
     getUsers: build.query({
       query: () => "/users",
+      providesTags: (result) =>
+        result ? [...result.map(({ _id: id }) => ({ type: "Users", id })), { type: "Users", id: "LIST" }] : [{ type: "Users", id: "LIST" }],
     }),
     getUser: build.query({
       query: (id) => `/users/${id}`,
-      providesTags: console.log,
+      providesTags: (result, error, id) => [{ type: "Users", id }],
+    }),
+
+    deleteUser: build.mutation({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/users/${id}`,
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "Users", id }],
+    }),
+
+    getFriends: build.query({
+      query: () => "/users/friends",
+      providesTags: [{ type: "Friends", id: "LIST" }],
+    }),
+
+    addFriend: build.mutation({
+      query: (id) => ({
+        method: "PUT",
+        url: `/users/friends/add/${id}`,
+      }),
+      invalidatesTags: [{ type: "Friends", id: "LIST" }],
+    }),
+
+    removeFriend: build.mutation({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/users/friends/remove/${id}`,
+      }),
+      invalidatesTags: [{ type: "Friends", id: "LIST" }],
     }),
   }),
 });
 
-export const { useGetUserQuery, useGetUsersQuery } = usersApi;
+export const { useGetUserQuery, useGetUsersQuery, useDeleteUserMutation, useGetFriendsQuery, useAddFriendMutation, useRemoveFriendMutation } =
+  usersApi;
 
 //////////////////////////////////////////////////
 export const store = configureStore({
@@ -39,23 +71,3 @@ export const store = configureStore({
 
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(usersApi.middleware),
 });
-
-// createApi({
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: "/",
-//   }),
-//   tagTypes: ["Post"],
-//   endpoints: (build) => ({
-//     getPost: build.query({
-//       // note: an optional `queryFn` may be used in place of `query`
-//       query: (id) => ({ url: `post/${id}` }),
-//       // Pick out data and prevent nested properties in a hook or selector
-//       transformResponse: (response, meta, arg) => response.data,
-//       providesTags: (result, error, id) => [{ type: "Post", id }],
-//       // The 2nd parameter is the destructured `QueryLifecycleApi`
-//       async onQueryStarted(arg, { dispatch, getState, extra, requestId, queryFulfilled, getCacheEntry, updateCachedData }) {},
-//       // The 2nd parameter is the destructured `QueryCacheLifecycleApi`
-//       async onCacheEntryAdded(arg, { dispatch, getState, extra, requestId, cacheEntryRemoved, cacheDataLoaded, getCacheEntry, updateCachedData }) {},
-//     }),
-//   }),
-// });
