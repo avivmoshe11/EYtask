@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { useAuth } from "../context/auth.context";
 import "../styles/Chat.css";
 
-const socket = io.connect("http://localhost:3900");
+const socket = io();
 
 function ChatApp({ privateChat = "" }) {
   const [room, setRoom] = useState(privateChat);
