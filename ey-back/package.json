@@ -5,10 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon .",
-    "build": "cd ../ey-front && npm run build",
-    "install-client": "cd ../ey-front && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build"
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",
