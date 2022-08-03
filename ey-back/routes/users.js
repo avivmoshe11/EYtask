@@ -26,6 +26,26 @@ router.post("/", async (req, res) => {
   res.send(_.pick(user, ["_id", "name", "email"]));
 });
 
+router.post("/admin/add", auth, isAdmin, async (req, res) => {
+  const { error } = validateUser(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
+  let user = await User.findOne({ email: req.body.email.toLowerCase() });
+  if (user) {
+    return res.status(400).send("email already registered");
+  }
+
+  user = await new User(req.body);
+  user.email = user.email.toLowerCase();
+  const salt = await bcrypt.genSalt(12);
+  user.password = await bcrypt.hash(user.password, salt);
+  await user.save();
+
+  res.send(_.pick(user, ["_id", "name", "email"]));
+});
+
 router.get("/", auth, async (req, res) => {
   const users = await User.find();
   if (!users || users.length == 0) {
