@@ -12,6 +12,10 @@ export function createUser(user) {
   return httpService.post("/users", user);
 }
 
+export function createUserByAdmin(user) {
+  return httpService.post("/users/admin/add", user);
+}
+
 export async function loginUser(credentials) {
   const { data } = await httpService.post("/auth", credentials);
 
@@ -78,6 +82,7 @@ const usersService = {
   deleteUserById,
   addFriendById,
   removeFriendById,
+  createUserByAdmin,
 };
 
 export default usersService;
