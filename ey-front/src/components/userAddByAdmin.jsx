@@ -32,7 +32,7 @@ const UserAddByAdmin = () => {
     }),
     async onSubmit(values) {
       try {
-        await createUser({ ...values });
+        await createUserByAdmin({ ...values });
 
         toast("New account is ready 👏");
 
